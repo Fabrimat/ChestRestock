@@ -1,0 +1,10 @@
+name: ChestRestock
+main: com.dumptruckman.chestrestock.ChestRestockPlugin
+version: maven-version-number
+author: dumptruckman
+softdepend: [Multiverse-Adventure]
+
+commands:
+  cr:
+    description: Views/sets/changes the settings of the chest you are targetting.
+    usage: /<command>

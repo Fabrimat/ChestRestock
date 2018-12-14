@@ -56,7 +56,6 @@ public class ChestRestockListener implements Listener {
         if (block == null) {
             return;
         }
-        InventoryHolder holder = (InventoryHolder) block.getState();
         CRChest rChest = getChestManager().getChest(block);
         if (rChest == null) {
             Logging.finest("chest not configured");

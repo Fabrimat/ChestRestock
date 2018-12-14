@@ -3,10 +3,14 @@ package com.dumptruckman.chestrestock;
 import com.dumptruckman.chestrestock.api.LootTable;
 import com.dumptruckman.chestrestock.api.LootTable.ItemSection;
 import com.dumptruckman.minecraft.pluginbase.util.Logging;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -106,10 +110,19 @@ class DefaultLootTable implements LootTable, ItemSection {
                 enchantLevel = randGen.nextInt(enchantLevel) + 1;
                 Logging.finest("Using random enchant level for " + enchantment + ": " + enchantLevel);
             }
+            ItemMeta itemData = item.getItemMeta();
             if (enchantSection.isSafe()) {
-                item.addEnchantment(enchantment, enchantLevel);
+            	if(enchantment.canEnchantItem(item)) {
+            		//item.addEnchantment(enchantment, enchantLevel);
+            		itemData.addEnchant(enchantment, enchantLevel, false);
+            	} else {
+            		//Bukkit.getServer().broadcastMessage(item.toString());
+            		//Bukkit.getServer().broadcastMessage(enchantment.toString());
+            	}
+            	item.setItemMeta(itemData);
             } else {
-                item.addUnsafeEnchantment(enchantment, enchantLevel);
+            	itemData.addEnchant(enchantment, enchantLevel, true);
+            	item.setItemMeta(itemData);
             }
         }
         Logging.finest("Total weight of '" + enchantSection + "': " + enchantSection.getTotalWeight());
@@ -206,7 +219,7 @@ class DefaultLootTable implements LootTable, ItemSection {
         protected String name;
 
         // Related to items
-        protected int itemId = 0;
+        protected Material itemId = Material.AIR;
         protected short itemData = 0;
         protected int itemAmount = 1;
 
@@ -225,7 +238,8 @@ class DefaultLootTable implements LootTable, ItemSection {
                 if (key.equalsIgnoreCase("rolls")) {
                     rolls = section.getInt("rolls", 1);
                 } else if (key.equalsIgnoreCase("id")) {
-                    itemId = section.getInt("id", 0);
+                    itemId = Material.getMaterial(section.getString("id", "AIR").toUpperCase());
+                    if(itemId == null) itemId = Material.AIR;
                 } else if (key.equalsIgnoreCase("data")) {
                     itemData = (short) section.getInt("data", 0);
                 } else if (key.equalsIgnoreCase("amount")) {
@@ -307,8 +321,10 @@ class DefaultLootTable implements LootTable, ItemSection {
 
         @Override
         public ItemStack getItem() {
-            if (itemId > 0 && itemAmount > 0 && itemData >= 0) {
-                return new ItemStack(itemId, itemAmount, itemData);
+            if (itemId != null && itemAmount > 0 && itemData >= 0) {
+                ItemStack tempItem =  new ItemStack(itemId, itemAmount);
+                tempItem.setDurability(itemData);
+                return tempItem;
             }
             return null;
         }
