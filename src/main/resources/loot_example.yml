@@ -6,23 +6,23 @@
 # An additional note, the numbers used as headings can be any number or word as long as they are not the key words
 # such as chance, id, amount, data, rolls, name, safe, level, or enchant.  They should be unique headings though as if
 # they are the same, errors may occur.
+# Material list https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
 justaname:
   1: # This is just one of the sections that will be included in the loot. The number is meaningless. 
      # It serves to separate this loot section. This section lacks a chance so it always gives the listed item.
-    id: DIAMOND
+    id: diamond_pickaxe
     enchant: # enchant sections give the above items an enchantment. no chance is listed so it is 100% likely.
-      name: silk_touch
+      name: silk_touch 
   2: # Again, just a section of loot labeled with a meaningless number. This section has a 50% chance to be used.
     chance: .50
     split: true # split means that only one of the items below will be selected when section '2' is rolled.
     diamond: # this is just a name to represent a new section of loot. This section gives a diamond sword.
-      id: DIAMOND
-    iron: # again just a name to represent the iron sword that is given by id: 267.
-      id: DIAMOND
+      id: diamond_sword
+    iron: # again just a name to represent the iron sword that is given by id: iron_sword.
+      id: iron_sword
     wood: # a wooden sword with silk touch is the alternative to the diamond or iron sword above.
-      id: DIAMOND
+      id: wooden_sword
       enchant:
-        safe: false
         name: silk_touch
     enchant: # this enchant section will be applied to the above item twice.
       rolls: 2
@@ -44,13 +44,12 @@ justaname:
       chance: 5 # Due to the parent section being 'split: true' this is a weight rather than a percent chance.
                 # Weights are relative to the weight of all other sections. In this case, the chance of 5 means
                 # the weight is 5 times more than the chance of 1 in the below section.
-      id: DIAMOND
+      id: diamond
     2:
       chance: 1
-      id: GOLD_INGOT
+      id: gold_ingot
       amount: 5
   4:
     chance: .10
-    id: IRON_INGOT
-    data: 2 # item data
+    id: carrot_on_a_stick
     amount: 20
