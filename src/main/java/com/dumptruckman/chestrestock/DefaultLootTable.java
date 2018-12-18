@@ -4,7 +4,6 @@ import com.dumptruckman.chestrestock.api.LootTable;
 import com.dumptruckman.chestrestock.api.LootTable.ItemSection;
 import com.dumptruckman.minecraft.pluginbase.util.Logging;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -111,17 +110,8 @@ class DefaultLootTable implements LootTable, ItemSection {
                 Logging.finest("Using random enchant level for " + enchantment + ": " + enchantLevel);
             }
             ItemMeta itemData = item.getItemMeta();
-            if (enchantSection.isSafe()) {
-            	if(enchantment.canEnchantItem(item)) {
-            		//item.addEnchantment(enchantment, enchantLevel);
-            		itemData.addEnchant(enchantment, enchantLevel, false);
-            	} else {
-            		//Bukkit.getServer().broadcastMessage(item.toString());
-            		//Bukkit.getServer().broadcastMessage(enchantment.toString());
-            	}
-            	item.setItemMeta(itemData);
-            } else {
-            	itemData.addEnchant(enchantment, enchantLevel, true);
+            if(enchantment.canEnchantItem(item)){
+            	itemData.addEnchant(enchantment, enchantLevel, false);
             	item.setItemMeta(itemData);
             }
         }
